@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
 // get Tag from ID
 router.get('/:id', (req, res) => {
   // Do I change this to findOne?
-  Tag.findByPk({
+  Tag.findOne({
     where: {
       id: req.params.id
     },

@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 // Get Category by ID
 router.get('/:id', (req, res) => {
   // Do I change this to findOne?
-  Category.findByPk({
+  Category.findOne({
     where:{
       id: req.params.id
     }

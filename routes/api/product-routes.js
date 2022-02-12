@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
 // get one product by ID
 router.get('/:id', (req, res) => {
   // Do I change this to findOne?
-  Product.findByPk({
+  Product.findOne({
     where: {
       id: req.params.id
     },
