@@ -3,7 +3,6 @@ const apiRoutes = require('./api');
 
 router.use('/api', apiRoutes);
 
-
 // added asterisk (Wildcard).
 router.use('*', (req, res) => {
   res.send("<h1>Wrong Route!</h1>")

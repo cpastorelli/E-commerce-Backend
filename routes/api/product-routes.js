@@ -8,19 +8,30 @@ router.get('/', (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
   Product.findAll({
-
+    // include: [Tag]
    }).then((productData) => {
+      res.status(200);
       res.json(productData);
-   }).catch((err) => res.json(err));
+   }).catch((err) => {
+      res.status(500);
+      res.json(err);
+   } );
 });
 
-// get one product
+// get one product by ID
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
   // be sure to include its associated Category and Tag data
-  Product.findByPk(req.params.id).then((productData) => {
+  // Do I change this to findOne?
+  Product.findByPk({
+    where: {
+      id: req.params.id
+    }
+  }).then((productData) => {
     res.json(productData);
-  });
+  }).catch((err) => {
+    res.status(400);
+    res.json(err);
+  })
 });
 
 // create new product
@@ -55,7 +66,7 @@ router.post('/', (req, res) => {
     });
 });
 
-// update product
+// update product by ID
 router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
@@ -97,13 +108,20 @@ router.put('/:id', (req, res) => {
     });
 });
 
+
+// Delete Product by ID
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
   Product.destroy({
-    
+    where: {
+      id: req.params.id
+    }
   }).then((deletedProduct) => {
     res.json(deletedProduct);
-  }).catch((err) => res.json(err));
+  }).catch((err) => {
+    res.status(400);
+    res.json(err);
+  });
 });
 
 module.exports = router;
