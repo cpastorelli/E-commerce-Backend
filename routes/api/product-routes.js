@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
-// The `/api/products` endpoint
+// ------------------- The `/api/products` endpoint -------------------
 
 // get all products
 router.get('/', async (req, res) => {
@@ -25,27 +25,27 @@ router.get('/', async (req, res) => {
 });
 
 // get one product by ID
-router.get('/:id', (req, res) => {
-  Product.findOne({
-    where: {
-      id: req.params.id
-    },
-    include: [
-      Category, 
-      {
-        model: Tag,
-        through: ProductTag
-      }
-    ]
-  })
-  .then((productData) => {
+router.get('/:id', async (req, res) => {
+  try { 
+    const productData = await Product.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [
+        Category,
+        {
+          model: Tag,
+          through: ProductTag
+        }
+      ]
+    })
     res.status(200);
     res.json(productData);
-  })
-  .catch((err) => {
+  }
+  catch(err) {
     res.status(400);
     res.json(err);
-  })
+  }
 });
 
 // create new product
@@ -124,22 +124,21 @@ router.put('/:id', (req, res) => {
     });
 });
 
-
 // Delete Product by ID
-router.delete('/:id', (req, res) => {
-  Product.destroy({
-    where: {
-      id: req.params.id
-    }
-  })
-  .then((deletedProduct) => {
+router.delete('/:id', async (req, res) => {
+  try {
+    const productData = await Product.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
     res.status(200);
-    res.json(deletedProduct);
-  })
-  .catch((err) => {
+    res.json(productData);
+  }
+  catch(err) {
     res.status(400);
     res.json(err);
-  });
+  }
 });
 
 module.exports = router;
