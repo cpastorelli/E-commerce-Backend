@@ -19,67 +19,67 @@ router.get('/', async (req, res) => {
 });
 
 // Get Category by ID
-router.get('/:id', (req, res) => {
-  Category.findOne({
-    where:{
-      id: req.params.id
-    }
+router.get('/:id', async (req, res) => {
+  try {
+    const categoryData = await Category.findOne({
+      where: {
+        id: req.params.id
+      }
     })
-    .then((categoryData) => {
-      res.status(200);
-      res.json(categoryData);
-  })
-  .catch((err) => {
+    res.status(200);
+    res.json(categoryData);
+  }
+  catch(err) {
     res.status(400);
-    res.json(err)
-  });
+    res.json(err);
+  }
 });
 
 // Create a new Category
-router.post('/', (req, res) => {
-  Category.create(req.body)
-  .then((categoryData) => {
+router.post('/', async (req, res) => {
+  try {
+    const categoryData = await Category.create(req.body);
     res.status(200);
     res.json(categoryData);
-  })
-  .catch((err) => {
+  }
+  catch(err) {
     res.status(400);
     res.json(err);
-  })
+  }
 });
 
 // Update Category by ID
-router.put('/:id', (req, res) => {
-  Category.update(req.body, {
-    where: {
-      id: req.params.id
-    }
-  })
-  .then((categoryData) => {
+router.put('/:id', async (req, res) => {
+  try {
+    const categoryData = await Category.update(req.body, {
+      where: {
+        id: req.params.id
+      }
+    })
     res.status(200);
     res.json(categoryData);
-  })
-  .catch((err) => {
+  }
+  catch(err) {
     res.status(400);
     res.json(err);
-  })
+  }
 });
 
 // Delete Category by ID
-router.delete('/:id', (req, res) => {
-  Category.destroy({
-    where: {
-      id: req.params.id
-    }
-  })
-  .then((deletedCategory) => {
+router.delete('/:id', async (req, res) => {
+  try {
+    const categoryData= await Category.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
     res.status(200);
-    res.json(deletedCategory);
-  })
-  .catch((err) => {
+    res.json(categoryData);
+  }
+  catch(err) {
     res.status(400);
     res.json(err);
-  });
+  }
 });
 
 module.exports = router;
