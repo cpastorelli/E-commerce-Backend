@@ -4,23 +4,22 @@ const { Category, Product } = require('../../models');
 // The `/api/categories` endpoint
 
 // Get all Categories
-router.get('/', (req, res) => {
-  Category.findAll({
-    include: [Product]
-  })
-  .then((categoryData) => {
+router.get('/', async (req, res) => {
+  try {
+    const categoryData = await Category.findAll({
+      include: [Product]
+    })
     res.status(200);
     res.json(categoryData);
-  })
-  .catch((err) => {
-    res.status(500);
+  }
+  catch(err) {
+    res.status(400);
     res.json(err);
-  });
+  }
 });
 
 // Get Category by ID
 router.get('/:id', (req, res) => {
-  // Do I change this to findOne?
   Category.findOne({
     where:{
       id: req.params.id

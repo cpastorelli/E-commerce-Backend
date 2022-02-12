@@ -4,91 +4,89 @@ const { Tag, Product, ProductTag } = require('../../models');
 // The `/api/tags` endpoint
 
 // Get all Tags
-router.get('/', (req, res) => {
-  Tag.findAll({
-    include: [{
+router.get('/', async (req, res) => {
+  try {
+    const tagData = await Tag.findAll({
+      include: [{
         model: Product,
         through: ProductTag
       }]
-  })
-  .then((tagData) => {
+    })
     res.status(200);
-      res.json(tagData);
-  })
-  .catch((err) => {
-      res.status(500);
-      res.json(err);
-  });
-
+    res.json(tagData);
+  }
+  catch(err) {
+    res.status(400);
+    res.json(err);
+  }
 });
 
 // get Tag from ID
-router.get('/:id', (req, res) => {
-  // Do I change this to findOne?
-  Tag.findOne({
-    where: {
-      id: req.params.id
-    },
-    include: [{
+router.get('/:id', async (req, res) => {
+  try {
+    const tagData = await Tag.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [{
         model: Product,
         through: ProductTag
       }]
-  })
-  .then((tagData) => {
+    })
     res.status(200);
     res.json(tagData);
-  })
-  .catch((err) => {
+  }
+  catch(err) {
     res.status(400);
     res.json(err);
-  })
+  }
 });
 
 // Create a new Tag
-router.post('/', (req, res) => {
-  Tag.create(req.body)
-  .then((tagData) => {
+router.post('/', async (req, res) => {
+  try {
+    const tagData = await Tag.create(req.body);
     res.status(200);
     res.json(tagData);
-  })
-  .catch((err) => {
+  }
+  catch(err) {
     res.status(400);
     res.json(err);
-  })
+  }
 });
 
 // Update existing Tag by ID
-router.put('/:id', (req, res) => {
-  Tag.update(req.body, {
-    where: {
-      id: req.params.id
-    }
-  })
-  .then((tagData) => {
+router.put('/:id', async (req, res) => {
+  try {
+    const tagData = await Tag.update(req.body, {
+      where: {
+        id:req.params.id
+      }
+    })
     res.status(200);
     res.json(tagData);
-  })
-  .catch((err) => {
+  }
+  catch(err) {
     res.status(400);
     res.json(err);
-  })
+  }
 });
 
 // Delete Tag by ID
-router.delete('/:id', (req, res) => {
-  Tag.destroy({
-    where: {
-      id: req.params.id
-    }
-  })
-  .then((deletedTag) => {
+router.delete('/:id', async (req, res) => {
+  try {
+    const tagData = await Tag.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
     res.status(200);
-    res.json(deletedTag);
-  })
-  .catch((err) => {
+    res.json(tagData);
+  }
+  catch(err) {
     res.status(400);
-    res.json(err);
-  });
+    res.json(tagData);
+  }
 });
 
 module.exports = router;
