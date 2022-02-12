@@ -8,10 +8,12 @@ router.get('/', (req, res) => {
   // be sure to include its associated Product data
   Tag.findAll({
     // include: [Product]
-  }).then((tagData) => {
+  })
+  .then((tagData) => {
     res.status(200);
       res.json(tagData);
-  }).catch((err) => {
+  })
+  .catch((err) => {
       res.status(500);
       res.json(err);
   });
@@ -27,8 +29,14 @@ router.get('/:id', (req, res) => {
     where: {
       id: req.params.id
     }
-  }).then((tagData) => {
+  })
+  .then((tagData) => {
+    res.status(200);
     res.json(tagData);
+  })
+  .catch((err) => {
+    res.status(400);
+    res.json(err);
   })
 });
 
@@ -48,9 +56,12 @@ router.delete('/:id', (req, res) => {
     where: {
       id: req.params.id
     }
-  }).then((deletedTag) => {
+  })
+  .then((deletedTag) => {
+    res.status(200);
     res.json(deletedTag);
-  }).catch((err) => {
+  })
+  .catch((err) => {
     res.status(400);
     res.json(err);
   });

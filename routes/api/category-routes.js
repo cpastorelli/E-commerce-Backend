@@ -7,10 +7,12 @@ const { Category, Product } = require('../../models');
 router.get('/', (req, res) => {
   Category.findAll({
     include: [Product]
-  }).then((categoryData) => {
+  })
+  .then((categoryData) => {
     res.status(200);
     res.json(categoryData);
-  }).catch((err) => {
+  })
+  .catch((err) => {
     res.status(500);
     res.json(err);
   });
@@ -23,9 +25,12 @@ router.get('/:id', (req, res) => {
     where:{
       id: req.params.id
     }
-    }).then((categoryData) => {
-    res.json(categoryData);
-  }).catch((err) => {
+    })
+    .then((categoryData) => {
+      res.status(200);
+      res.json(categoryData);
+  })
+  .catch((err) => {
     res.status(400);
     res.json(err)
   });
@@ -33,12 +38,32 @@ router.get('/:id', (req, res) => {
 
 // Create a new Category
 router.post('/', (req, res) => {
-  // create a new category
+  Category.create(req.body)
+  .then((categoryData) => {
+    res.status(200);
+    res.json(categoryData);
+  })
+  .catch((err) => {
+    res.status(400);
+    res.json(err);
+  })
 });
 
 // Update Category by ID
 router.put('/:id', (req, res) => {
-  // update a category by its `id` value
+  Category.update(req.body, {
+    where: {
+      id: req.params.id
+    }
+  })
+  .then((categoryData) => {
+    res.status(200);
+    res.json(categoryData);
+  })
+  .catch((err) => {
+    res.status(400);
+    res.json(err);
+  })
 });
 
 // Delete Category by ID
@@ -47,7 +72,8 @@ router.delete('/:id', (req, res) => {
     where: {
       id: req.params.id
     }
-  }).then((deletedCategory) => {
+  })
+  .then((deletedCategory) => {
     res.status(200);
     res.json(deletedCategory);
   })
