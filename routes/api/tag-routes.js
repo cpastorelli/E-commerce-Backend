@@ -5,9 +5,11 @@ const { Tag, Product, ProductTag } = require('../../models');
 
 // Get all Tags
 router.get('/', (req, res) => {
-  // be sure to include its associated Product data
   Tag.findAll({
-    // include: [Product]
+    include: [{
+        model: Product,
+        through: ProductTag
+      }]
   })
   .then((tagData) => {
     res.status(200);
@@ -22,13 +24,15 @@ router.get('/', (req, res) => {
 
 // get Tag from ID
 router.get('/:id', (req, res) => {
-  // find a single tag by its `id`
-  // be sure to include its associated Product data
   // Do I change this to findOne?
   Tag.findByPk({
     where: {
       id: req.params.id
-    }
+    },
+    include: [{
+        model: Product,
+        through: ProductTag
+      }]
   })
   .then((tagData) => {
     res.status(200);
@@ -42,12 +46,32 @@ router.get('/:id', (req, res) => {
 
 // Create a new Tag
 router.post('/', (req, res) => {
-  // create a new tag
+  Tag.create(req.body)
+  .then((tagData) => {
+    res.status(200);
+    res.json(tagData);
+  })
+  .catch((err) => {
+    res.status(400);
+    res.json(err);
+  })
 });
 
 // Update existing Tag by ID
 router.put('/:id', (req, res) => {
-  // update a tag's name by its `id` value
+  Tag.update(req.body, {
+    where: {
+      id: req.params.id
+    }
+  })
+  .then((tagData) => {
+    res.status(200);
+    res.json(tagData);
+  })
+  .catch((err) => {
+    res.status(400);
+    res.json(err);
+  })
 });
 
 // Delete Tag by ID
